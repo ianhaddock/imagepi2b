@@ -1,7 +1,8 @@
 #!/bin/bash -e
 
 #
-# This Software is provided “AS IS” and without warranty of any kind.
+# Ian Haddock April 23, 2023
+# Provided “AS IS” and without warranty of any kind.
 #
 
 

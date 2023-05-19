@@ -1,0 +1,7 @@
+# .gitignore
+
+# MacOS
+.DS_Store
+
+# Keys
+*.pub
