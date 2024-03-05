@@ -99,13 +99,14 @@ echo "build USB partitions";
 /sbin/parted --script $USB \
 	mklabel msdos \
 	mkpart primary ext4 1 15GB \
-	mkpart extended 15GB 55GB \
+	mkpart extended 15GB 60GB \
 	mkpart logical ext4 15GB 25GB \
 	mkpart logical ext4 25GB 30GB \
-	mkpart logical ext4 30GB 40GB \
-	mkpart logical ext4 40GB 45GB \
-    mkpart logical ext4 45GB 50GB \
-	mkpart logical ext4 50GB 55GB ;
+	mkpart logical ext4 30GB 35GB \
+	mkpart logical ext4 35GB 40GB \
+    mkpart logical ext4 40GB 45GB \
+	mkpart logical ext4 45GB 46GB \
+	mkpart logical ext4 46GB 60GB ;
 
 echo "create USB file systems";
 mkfs.ext4 -Fq "$USB"1
@@ -115,6 +116,7 @@ mkfs.ext4 -Fq "$USB"7
 mkfs.ext4 -Fq "$USB"8
 mkfs.ext4 -Fq "$USB"9
 mkfs.ext4 -Fq "$USB"10
+mkfs.ext4 -Fq "$USB"11
 
 echo "add rootfs label to first partition";
 e2label "$USB"1 "rootfs";
@@ -202,6 +204,13 @@ echo "PARTUUID=$uuid	/var/log	ext4	rw,noexec,nodev		0	2" >> /mnt/rpi/usb/etc/fst
 
 uuid=$(blkid | grep "$USB"10: | awk '{print $4}' | cut -c 11-21);
 echo "PARTUUID=$uuid	/mnt		ext4	rw,noexec,nodev		0	2" >> /mnt/rpi/usb/etc/fstab ;
+
+uuid=$(blkid | grep "$USB"11: | awk '{print $4}' | cut -c 11-21);
+echo "PARTUUID=$uuid	/mnt/containers		ext4	rw,nodev	0	2" >> /mnt/rpi/usb/etc/fstab ;
+
+
+# create containers directory on USB media target
+mkdir /mnt/rpi/usb/mnt/containers
 
 
 # cleanup 
