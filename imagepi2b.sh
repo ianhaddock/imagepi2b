@@ -23,12 +23,12 @@ function usage()
     echo "This script: "
     echo "* downloads and writes a 32bit Raspberry Pi OS Lite image to your MicroSD";
     echo "* creates the root partition on a 64G USB device with these partitions:";
-    echo "  /home, /tmp, /mnt, /var, /var/log, /var/tmp";
+    echo "  /home, /tmp, /mnt, /mnt/containers, /var, /var/log, /var/tmp";
     echo "";
     echo "By continuing you understand this will DESTRUCTIVELY modify the device.";
     echo "This Software is provided “AS IS” and without warranty of any kind.";
     echo "";
-    echo "Usage: imagepi2b.sh [boot MicroSD] [root USB]";
+    echo "Usage: imagepi2b.sh /dev/[boot MicroSD] /dev/[root USB]";
     echo "";
 };
 
@@ -99,14 +99,14 @@ echo "build USB partitions";
 /sbin/parted --script $USB \
 	mklabel msdos \
 	mkpart primary ext4 1 15GB \
-	mkpart extended 15GB 60GB \
+	mkpart extended 15GB 61GB \
 	mkpart logical ext4 15GB 25GB \
 	mkpart logical ext4 25GB 30GB \
 	mkpart logical ext4 30GB 35GB \
 	mkpart logical ext4 35GB 40GB \
     mkpart logical ext4 40GB 45GB \
 	mkpart logical ext4 45GB 46GB \
-	mkpart logical ext4 46GB 60GB ;
+	mkpart logical ext4 46GB 61GB ;
 
 echo "create USB file systems";
 mkfs.ext4 -Fq "$USB"1
